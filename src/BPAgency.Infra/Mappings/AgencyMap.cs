@@ -11,6 +11,12 @@ namespace BPAgency.Infra.Mappings
             builder.Property(a => a.Id)
                .HasColumnName("Id");
 
+            builder.Property(a => a.Code)
+                .HasColumnName("Code")
+                .HasColumnType("varchar(10)")
+                .HasMaxLength(10)
+                .IsRequired();
+
             builder.Property(a => a.Name)
                 .HasColumnType("varchar(100)")
                 .HasMaxLength(100)

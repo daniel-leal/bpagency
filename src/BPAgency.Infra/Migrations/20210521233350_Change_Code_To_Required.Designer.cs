@@ -4,14 +4,16 @@ using BPAgency.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BPAgency.Infra.Migrations
 {
     [DbContext(typeof(BPAgencyContext))]
-    partial class BPAgencyContextModelSnapshot : ModelSnapshot
+    [Migration("20210521233350_Change_Code_To_Required")]
+    partial class Change_Code_To_Required
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

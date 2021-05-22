@@ -4,14 +4,16 @@ using BPAgency.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BPAgency.Infra.Migrations
 {
     [DbContext(typeof(BPAgencyContext))]
-    partial class BPAgencyContextModelSnapshot : ModelSnapshot
+    [Migration("20210521233116_Add_Code_To_Agency")]
+    partial class Add_Code_To_Agency
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +44,6 @@ namespace BPAgency.Infra.Migrations
                         .HasColumnType("varchar(40)");
 
                     b.Property<string>("Code")
-                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)")
                         .HasColumnName("Code");
