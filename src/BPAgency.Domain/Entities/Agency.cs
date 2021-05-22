@@ -1,3 +1,6 @@
+using System.Text.Json.Serialization;
+using NetTopologySuite.Geometries;
+
 namespace BPAgency.Domain.Entities
 {
     public class Agency : Entity
@@ -7,8 +10,7 @@ namespace BPAgency.Domain.Entities
                       string serviceEndTime,
                       string selfServiceStartTime,
                       string selfServiceEndTime,
-                      decimal latitude,
-                      decimal longitude,
+                      Point location,
                       string phone,
                       string phone2,
                       string phone3,
@@ -24,8 +26,7 @@ namespace BPAgency.Domain.Entities
             ServiceEndTime = serviceEndTime;
             SelfServiceStartTime = selfServiceStartTime;
             SelfServiceEndTime = selfServiceEndTime;
-            Latitude = latitude;
-            Longitude = longitude;
+            Location = location;
             Phone = phone;
             Phone2 = phone2;
             Phone3 = phone3;
@@ -39,6 +40,8 @@ namespace BPAgency.Domain.Entities
 
         public string Name { get; private set; }
 
+        public string Code { get; private set; }
+
         public string ServiceStartTime { get; private set; }
 
         public string ServiceEndTime { get; private set; }
@@ -47,9 +50,12 @@ namespace BPAgency.Domain.Entities
 
         public string SelfServiceEndTime { get; private set; }
 
-        public decimal Latitude { get; private set; }
+        [JsonIgnore]
+        public Point Location { get; private set; }
 
-        public decimal Longitude { get; private set; }
+        public double Latitude => Location.Coordinate.X;
+
+        public double Longitude => Location.Coordinate.Y;
 
         public string Phone { get; private set; }
 

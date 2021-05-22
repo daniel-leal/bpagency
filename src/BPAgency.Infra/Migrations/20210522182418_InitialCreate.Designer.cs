@@ -6,12 +6,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 
 namespace BPAgency.Infra.Migrations
 {
     [DbContext(typeof(BPAgencyContext))]
-    [Migration("20210521233350_Change_Code_To_Required")]
-    partial class Change_Code_To_Required
+    [Migration("20210522182418_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -60,11 +61,8 @@ namespace BPAgency.Infra.Migrations
                     b.Property<bool>("IsStation")
                         .HasColumnType("bit");
 
-                    b.Property<decimal>("Latitude")
-                        .HasColumnType("numeric(14,8)");
-
-                    b.Property<decimal>("Longitude")
-                        .HasColumnType("numeric(14,8)");
+                    b.Property<Point>("Location")
+                        .HasColumnType("geography");
 
                     b.Property<string>("Name")
                         .IsRequired()

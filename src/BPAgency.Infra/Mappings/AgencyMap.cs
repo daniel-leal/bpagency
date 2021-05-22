@@ -33,20 +33,16 @@ namespace BPAgency.Infra.Mappings
                 .IsRequired();
 
             builder.Property(a => a.SelfServiceStartTime)
-            .HasColumnType("varchar(5)")
-            .HasMaxLength(5)
-            .IsRequired();
+                .HasColumnType("varchar(5)")
+                .HasMaxLength(5)
+                .IsRequired();
 
             builder.Property(a => a.SelfServiceEndTime)
                 .HasColumnType("varchar(5)")
                 .HasMaxLength(5)
                 .IsRequired();
 
-            builder.Property(a => a.Latitude)
-                .HasColumnType("numeric(14,8)");
-
-            builder.Property(a => a.Longitude)
-                .HasColumnType("numeric(14,8)");
+            builder.Property(a => a.Location);
 
             builder.Property(a => a.Phone)
                .HasColumnType("varchar(20)")

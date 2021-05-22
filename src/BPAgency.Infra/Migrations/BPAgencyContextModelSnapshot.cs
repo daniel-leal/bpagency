@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 
 namespace BPAgency.Infra.Migrations
 {
@@ -58,11 +59,8 @@ namespace BPAgency.Infra.Migrations
                     b.Property<bool>("IsStation")
                         .HasColumnType("bit");
 
-                    b.Property<decimal>("Latitude")
-                        .HasColumnType("numeric(14,8)");
-
-                    b.Property<decimal>("Longitude")
-                        .HasColumnType("numeric(14,8)");
+                    b.Property<Point>("Location")
+                        .HasColumnType("geography");
 
                     b.Property<string>("Name")
                         .IsRequired()

@@ -1,19 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BPAgency.Domain.Repositories;
 using BPAgency.Infra.Contexts;
 using BPAgency.Infra.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace BPAgency.Api
@@ -38,7 +31,8 @@ namespace BPAgency.Api
 
             services.AddDbContext<BPAgencyContext>(opt =>
                 opt.UseSqlServer(Configuration
-                    .GetConnectionString("connectionString")));
+                .GetConnectionString("connectionString"),
+                x => x.UseNetTopologySuite()));
 
 
             // IoC

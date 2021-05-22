@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using NetTopologySuite.Geometries;
 
 namespace BPAgency.Infra.Migrations
 {
@@ -13,12 +14,12 @@ namespace BPAgency.Infra.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    Code = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
                     ServiceStartTime = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false),
                     ServiceEndTime = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false),
                     SelfServiceStartTime = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false),
                     SelfServiceEndTime = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false),
-                    Latitude = table.Column<decimal>(type: "numeric(14,8)", nullable: false),
-                    Longitude = table.Column<decimal>(type: "numeric(14,8)", nullable: false),
+                    Location = table.Column<Point>(type: "geography", nullable: true),
                     Phone = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     Phone2 = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
                     Phone3 = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
