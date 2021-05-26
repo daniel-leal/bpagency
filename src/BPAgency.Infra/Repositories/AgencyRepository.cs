@@ -21,7 +21,7 @@ namespace BPAgency.Infra.Repositories
         {
             return _context.Agencies
                 .AsNoTracking()
-                .OrderBy(x => x.Name);
+                .OrderBy(x => x.Name).ToList().OrderBy(x => x.MyDistance);
         }
 
         public IEnumerable<Agency> GetAllFromCapital()

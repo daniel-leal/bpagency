@@ -57,6 +57,8 @@ namespace BPAgency.Domain.Entities
 
         public double Longitude => Location.Coordinate.Y;
 
+        public double MyDistance => CalcDistanceInKm(-1.4398515, -48.490871);
+
         public string Phone { get; private set; }
 
         public string Phone2 { get; private set; }
@@ -74,5 +76,14 @@ namespace BPAgency.Domain.Entities
         public bool IsStation { get; private set; } // Posto de Atendimento?
 
         public bool IsCapital { get; private set; } // Agencia ou Posto da Capital?
+
+        private double CalcDistanceInKm(double lat, double lon)
+        {
+            var pt = new Point(lat, lon) { SRID = 4326 };
+
+            var distanceInKm = Location.ProjectTo(2855).Distance(pt.ProjectTo(2855)) / 1000.0;
+
+            return distanceInKm;
+        }
     }
 }
