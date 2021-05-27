@@ -58,7 +58,7 @@ namespace BPAgency.Domain.Entities
 
         public double Longitude => Location.Coordinate.Y;
 
-        public double MyDistance => CalcDistanceInKm(-1.4398515, -48.490871);
+        public double DistanceInKm => CalcDistanceInKm(-1.4398515, -48.490871);
 
         public string Phone { get; private set; }
 
@@ -78,11 +78,38 @@ namespace BPAgency.Domain.Entities
 
         public bool IsCapital { get; private set; } // Agencia ou Posto da Capital?
 
+        /// <summary>This method calculates the distance in KM between you 
+        /// and another geographic point (Agency).
+        /// <example>For example:
+        /// <code>
+        ///    var senadorLemos = new Point(-122.333056, 47.609722) { SRID = 4326 };
+        ///    
+        ///    var yourDistanceFromSLemosInKm = CalcDisntaceInKm(
+        ///         senadorLemos.CoordinateX,
+        ///         senadorLemos.CoodinateY
+        ///     );
+        /// </code>
+        /// results in <c>yourDistanceFromSeattleInKm</c>.
+        /// </example>
+        /// </summary>
+        /// <param name="lat">the new x-coordinate (Latitude).</param>
+        /// <param name="lon">the new y-coordinate (Longitude).</param>
         private double CalcDistanceInKm(double lat, double lon)
         {
+            /* 
+            * SRID 4326 refers to WGS 84, a pattern used in GPS and 
+            * other grographic systems
+            */
             var pt = new Point(lat, lon) { SRID = 4326 };
 
-            var distanceInKm = Location.ProjectTo(2855).Distance(pt.ProjectTo(2855)) / 1000.0;
+            /* 
+            * In order to get the distance in meters, we need to project to an 
+            * appropriate coordinate system. In this case, we're using SRID 2855 
+            * since it covers the geographic area of our data 
+            */
+            var distanceInKm = Location
+                .ProjectTo(2855)
+                .Distance(pt.ProjectTo(2855)) / 1000.0;
 
             return distanceInKm;
         }

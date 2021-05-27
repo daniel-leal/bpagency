@@ -22,7 +22,6 @@ namespace BPAgency.Infra.Repositories
         public async Task<PagedList<Agency>> GetAll(AgencyParameters agencyParameters)
         {
             var agencies = await _context.Agencies
-                .AsQueryable()
                 .AsNoTracking()
                 .OrderBy(a => a.Name)
                 .ToListAsync();
@@ -35,17 +34,22 @@ namespace BPAgency.Infra.Repositories
             return pagedAgencies;
         }
 
-        public async Task<List<Agency>> GetAllFromCapital()
+        public async Task<PagedList<Agency>> GetAllFromCapital(AgencyParameters agencyParameters)
         {
             var agencies = await _context.Agencies
-                .AsNoTracking()
                 .Where(x => x.IsCapital)
-                .OrderBy(x => x.Name).ToListAsync();
+                .OrderBy(x => x.Name)
+                .ToListAsync();
 
-            return agencies;
+            var pagedAgencies = PagedList<Agency>.ToPagedList(
+               agencies.AsQueryable(),
+               agencyParameters.PageNumber,
+               agencyParameters.PageSize);
+
+            return pagedAgencies;
         }
 
-        public async Task<List<Agency>> GetAllFromCity(string city)
+        public async Task<PagedList<Agency>> GetAllFromCity(string city, AgencyParameters agencyParameters)
         {
             var agencies = await _context.Agencies
                 .AsNoTracking()
@@ -53,10 +57,15 @@ namespace BPAgency.Infra.Repositories
                 .OrderBy(x => x.Name)
                 .ToListAsync();
 
-            return agencies;
+            var pagedAgencies = PagedList<Agency>.ToPagedList(
+                agencies.AsQueryable(),
+                agencyParameters.PageNumber,
+                agencyParameters.PageSize);
+
+            return pagedAgencies;
         }
 
-        public async Task<List<Agency>> GetAllFromInland()
+        public async Task<PagedList<Agency>> GetAllFromInland(AgencyParameters agencyParameters)
         {
             var agencies = await _context.Agencies
                 .AsNoTracking()
@@ -64,10 +73,15 @@ namespace BPAgency.Infra.Repositories
                 .OrderBy(x => x.Name)
                 .ToListAsync();
 
-            return agencies;
+            var pagedAgencies = PagedList<Agency>.ToPagedList(
+                agencies.AsQueryable(),
+                agencyParameters.PageNumber,
+                agencyParameters.PageSize);
+
+            return pagedAgencies;
         }
 
-        public async Task<List<Agency>> GetAllStations()
+        public async Task<PagedList<Agency>> GetAllStations(AgencyParameters agencyParameters)
         {
             var agencies = await _context.Agencies
                 .AsNoTracking()
@@ -75,15 +89,18 @@ namespace BPAgency.Infra.Repositories
                 .OrderBy(x => x.Name)
                 .ToListAsync();
 
-            return agencies;
-        }
+            var pagedAgencies = PagedList<Agency>.ToPagedList(
+                agencies.AsQueryable(),
+                agencyParameters.PageNumber,
+                agencyParameters.PageSize);
 
+            return pagedAgencies;
+        }
 
         public async Task<Agency> GetById(Guid id)
         {
-            var agency = await _context.Agencies.FindAsync(id);
-
-            return agency;
+            return await _context.Agencies
+                .FindAsync(id);
         }
     }
 }

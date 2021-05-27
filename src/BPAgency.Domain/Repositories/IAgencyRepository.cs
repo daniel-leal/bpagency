@@ -9,10 +9,10 @@ namespace BPAgency.Domain.Repositories
     public interface IAgencyRepository
     {
         Task<PagedList<Agency>> GetAll(AgencyParameters agencyParameters);
-        Task<List<Agency>> GetAllStations();
-        Task<List<Agency>> GetAllFromCapital();
-        Task<List<Agency>> GetAllFromInland();
-        Task<List<Agency>> GetAllFromCity(string city);
+        Task<PagedList<Agency>> GetAllStations(AgencyParameters agencyParameters);
+        Task<PagedList<Agency>> GetAllFromCapital(AgencyParameters agencyParameters);
+        Task<PagedList<Agency>> GetAllFromInland(AgencyParameters agencyParameters);
+        Task<PagedList<Agency>> GetAllFromCity(string city, AgencyParameters agencyParameters);
         Task<Agency> GetById(Guid id);
     }
 }
