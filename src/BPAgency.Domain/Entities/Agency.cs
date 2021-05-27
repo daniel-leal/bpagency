@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using BPAgency.Domain.Utils;
 using NetTopologySuite.Geometries;
@@ -80,6 +79,8 @@ namespace BPAgency.Domain.Entities
 
         public bool IsCapital { get; private set; } // Agencia ou Posto da Capital?
 
+        public bool IsOpen => CheckAgencyOpen();
+
         /// <summary>This method calculates the distance in KM between you 
         /// and another geographic point (Agency).
         /// <example>For example:
@@ -113,9 +114,39 @@ namespace BPAgency.Domain.Entities
                 Location
                 .ProjectTo(2855)
                 .Distance(pt.ProjectTo(2855)) / 1000.0,
-                2);
+                2); // Divide By 1000 to convert M to KM
 
             return distanceInKm;
+        }
+
+        /// <summary>
+        ///This method checks if an agency is open on current datetime
+        /// </summary>
+        private bool CheckAgencyOpen()
+        {
+            var DayOfWeek = DateTime.Today.DayOfWeek;
+            if (DayOfWeek.Equals("Saturday") || DayOfWeek.Equals("Sunday"))
+                return false;
+
+            if (string.IsNullOrEmpty(ServiceStartTime))
+                return false;
+
+            var getStartHour = int.Parse(ServiceStartTime.Substring(0, 2));
+            var getEndHour = int.Parse(ServiceEndTime.Substring(0, 2));
+
+            var startTime = new TimeSpan(getStartHour, 0, 0);
+            var endTime = new TimeSpan(getEndHour, 0, 0);
+
+            var currentTime = TimeZoneInfo
+                .ConvertTime(
+                    DateTime.Now,
+                    TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time")
+                ).TimeOfDay;
+
+            if (currentTime > startTime && currentTime < endTime)
+                return true;
+
+            return false;
         }
     }
 }
