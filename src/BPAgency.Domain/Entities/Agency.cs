@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using BPAgency.Domain.Utils;
 using NetTopologySuite.Geometries;
 
 namespace BPAgency.Domain.Entities

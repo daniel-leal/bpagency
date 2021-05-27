@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BPAgency.Domain.Entities;
+using BPAgency.Domain.Entities.Pagination;
 using BPAgency.Domain.Repositories;
 using BPAgency.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -17,48 +19,71 @@ namespace BPAgency.Infra.Repositories
             _context = context;
         }
 
-        public IEnumerable<Agency> GetAll()
+        public async Task<PagedList<Agency>> GetAll(AgencyParameters agencyParameters)
         {
-            return _context.Agencies
+            var agencies = await _context.Agencies
+                .AsQueryable()
                 .AsNoTracking()
-                .OrderBy(x => x.Name).ToList().OrderBy(x => x.MyDistance);
+                .OrderBy(a => a.Name)
+                .ToListAsync();
+
+            var pagedAgencies = PagedList<Agency>.ToPagedList(
+                agencies.AsQueryable(),
+                agencyParameters.PageNumber,
+                agencyParameters.PageSize);
+
+            return pagedAgencies;
         }
 
-        public IEnumerable<Agency> GetAllFromCapital()
+        public async Task<List<Agency>> GetAllFromCapital()
         {
-            return _context.Agencies
+            var agencies = await _context.Agencies
                 .AsNoTracking()
                 .Where(x => x.IsCapital)
-                .OrderBy(x => x.Name);
+                .OrderBy(x => x.Name).ToListAsync();
+
+            return agencies;
         }
 
-        public IEnumerable<Agency> GetAllFromCity(string city)
+        public async Task<List<Agency>> GetAllFromCity(string city)
         {
-            return _context.Agencies
+            var agencies = await _context.Agencies
                 .AsNoTracking()
                 .Where(x => x.City.Contains(city))
-                .OrderBy(x => x.Name);
+                .OrderBy(x => x.Name)
+                .ToListAsync();
+
+            return agencies;
         }
 
-        public IEnumerable<Agency> GetAllFromInland()
+        public async Task<List<Agency>> GetAllFromInland()
         {
-            return _context.Agencies
+            var agencies = await _context.Agencies
                 .AsNoTracking()
                 .Where(x => !x.IsCapital)
-                .OrderBy(x => x.Name);
+                .OrderBy(x => x.Name)
+                .ToListAsync();
+
+            return agencies;
         }
 
-        public IEnumerable<Agency> GetAllStations()
+        public async Task<List<Agency>> GetAllStations()
         {
-            return _context.Agencies
+            var agencies = await _context.Agencies
                 .AsNoTracking()
                 .Where(x => x.IsStation)
-                .OrderBy(x => x.Name);
+                .OrderBy(x => x.Name)
+                .ToListAsync();
+
+            return agencies;
         }
 
-        public Agency GetById(Guid id)
+
+        public async Task<Agency> GetById(Guid id)
         {
-            return _context.Agencies.Find(id);
+            var agency = await _context.Agencies.FindAsync(id);
+
+            return agency;
         }
     }
 }

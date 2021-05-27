@@ -4,7 +4,7 @@ using ProjNet;
 using ProjNet.CoordinateSystems;
 using ProjNet.CoordinateSystems.Transformations;
 
-namespace BPAgency.Domain.Entities
+namespace BPAgency.Domain.Utils
 {
     internal static class GeometryExtensions
     {
