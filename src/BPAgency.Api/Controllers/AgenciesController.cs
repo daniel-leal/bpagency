@@ -21,7 +21,7 @@ namespace BPAgency.Api
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Agency>>> GetAll(
+        public async Task<ActionResult<IEnumerable<Agency>>> GetAllAsync(
             [FromServices] IAgencyRepository repository,
             [FromQuery] PagedAgencyParameters pageParameters,
             [FromQuery] bool? isCapital,
@@ -29,7 +29,12 @@ namespace BPAgency.Api
             [FromQuery] bool? isOpen
         )
         {
-            var agencies = await repository.GetAll(pageParameters, isCapital, isStation, isOpen);
+            var agencies = await repository.GetAll(
+                pageParameters,
+                isCapital,
+                isStation,
+                isOpen
+            );
 
             var metadata = new
             {
@@ -40,13 +45,16 @@ namespace BPAgency.Api
                 agencies.HasNext,
                 agencies.HasPrevious
             };
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
+            Response.Headers.Add(
+                "X-Pagination",
+                JsonSerializer.Serialize(metadata)
+            );
 
             return Ok(agencies);
         }
 
         [HttpGet("{code}")]
-        public async Task<ActionResult<IEnumerable<Agency>>> GetByCode(
+        public async Task<ActionResult<IEnumerable<Agency>>> GetByCodeAsync(
             [FromServices] IAgencyRepository repository,
             [FromRoute] string code
         )

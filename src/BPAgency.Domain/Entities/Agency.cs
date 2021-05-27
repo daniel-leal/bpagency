@@ -94,7 +94,7 @@ namespace BPAgency.Domain.Entities
         ///         senadorLemos.CoodinateY
         ///     );
         /// </code>
-        /// results in <c>yourDistanceFromSeattleInKm</c>.
+        /// results in <c>yourDistanceFromSLemosInKm</c>.
         /// </example>
         /// </summary>
         /// <param name="lat">the new x-coordinate (Latitude).</param>
