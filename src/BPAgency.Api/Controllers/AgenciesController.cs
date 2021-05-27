@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BPAgency.Domain.Entities;
@@ -42,9 +41,23 @@ namespace BPAgency.Api
             };
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
 
-            _logger.LogInformation($"Returned {agencies.Count} agencies from database.");
-
             return Ok(agencies);
+        }
+
+        [HttpGet("{code}")]
+        public async Task<ActionResult<IEnumerable<Agency>>> GetByCode(
+            [FromServices] IAgencyRepository repository,
+            [FromRoute] string code
+        )
+        {
+            var agency = await repository.GetByCode(code);
+
+            if (agency == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(agency);
         }
     }
 }

@@ -44,10 +44,11 @@ namespace BPAgency.Infra.Repositories
             return pagedAgencies;
         }
 
-        public async Task<Agency> GetById(Guid id)
+        public async Task<Agency> GetByCode(string code)
         {
             return await _context.Agencies
-                .FindAsync(id);
+                .Where(a => a.Code.Equals(code))
+                .FirstOrDefaultAsync();
         }
     }
 }
