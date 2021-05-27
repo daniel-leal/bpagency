@@ -43,7 +43,7 @@ namespace BPAgency.Infra.Repositories
                 .OrderBy(a => a.DistanceInKm)
                 .ToList();
             else
-                localQuery
+                localQuery = localQuery
                 .OrderBy(a => a.DistanceInKm)
                 .ToList();
 

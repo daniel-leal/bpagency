@@ -139,10 +139,20 @@ namespace BPAgency.Domain.Entities
             var startTime = new TimeSpan(getStartHour, 0, 0);
             var endTime = new TimeSpan(getEndHour, 0, 0);
 
-            var currentTime = TimeZoneInfo
+            // Get timezone by Operational System
+            var currentTime = new TimeSpan();
+            var os = Environment.OSVersion;
+            if (os.VersionString.Contains("Windows"))
+                currentTime = TimeZoneInfo
                 .ConvertTime(
                     DateTime.Now,
                     TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time")
+                ).TimeOfDay;
+            else
+                currentTime = TimeZoneInfo
+                .ConvertTime(
+                    DateTime.Now,
+                    TimeZoneInfo.FindSystemTimeZoneById("Brazil/East")
                 ).TimeOfDay;
 
             if (currentTime > startTime && currentTime < endTime)
