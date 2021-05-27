@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BPAgency.Domain.Entities;
@@ -19,80 +18,28 @@ namespace BPAgency.Infra.Repositories
             _context = context;
         }
 
-        public async Task<PagedList<Agency>> GetAll(AgencyParameters agencyParameters)
+        public async Task<PagedList<Agency>> GetAll(
+            PagedAgencyParameters pagedParameters,
+            bool? isCapital,
+            bool? isStation
+        )
         {
-            var agencies = await _context.Agencies
+            var query = _context.Agencies
                 .AsNoTracking()
-                .OrderBy(a => a.Name)
-                .ToListAsync();
+                .AsQueryable();
+
+            if (isCapital.HasValue)
+                query = query.Where(a => a.IsCapital == isCapital);
+
+            if (isStation.HasValue)
+                query = query.Where(a => a.IsStation == isStation);
+
+            var agencies = await query.ToListAsync();
 
             var pagedAgencies = PagedList<Agency>.ToPagedList(
-                agencies.AsQueryable(),
-                agencyParameters.PageNumber,
-                agencyParameters.PageSize);
-
-            return pagedAgencies;
-        }
-
-        public async Task<PagedList<Agency>> GetAllFromCapital(AgencyParameters agencyParameters)
-        {
-            var agencies = await _context.Agencies
-                .Where(x => x.IsCapital)
-                .OrderBy(x => x.Name)
-                .ToListAsync();
-
-            var pagedAgencies = PagedList<Agency>.ToPagedList(
-               agencies.AsQueryable(),
-               agencyParameters.PageNumber,
-               agencyParameters.PageSize);
-
-            return pagedAgencies;
-        }
-
-        public async Task<PagedList<Agency>> GetAllFromCity(string city, AgencyParameters agencyParameters)
-        {
-            var agencies = await _context.Agencies
-                .AsNoTracking()
-                .Where(x => x.City.Contains(city))
-                .OrderBy(x => x.Name)
-                .ToListAsync();
-
-            var pagedAgencies = PagedList<Agency>.ToPagedList(
-                agencies.AsQueryable(),
-                agencyParameters.PageNumber,
-                agencyParameters.PageSize);
-
-            return pagedAgencies;
-        }
-
-        public async Task<PagedList<Agency>> GetAllFromInland(AgencyParameters agencyParameters)
-        {
-            var agencies = await _context.Agencies
-                .AsNoTracking()
-                .Where(x => !x.IsCapital)
-                .OrderBy(x => x.Name)
-                .ToListAsync();
-
-            var pagedAgencies = PagedList<Agency>.ToPagedList(
-                agencies.AsQueryable(),
-                agencyParameters.PageNumber,
-                agencyParameters.PageSize);
-
-            return pagedAgencies;
-        }
-
-        public async Task<PagedList<Agency>> GetAllStations(AgencyParameters agencyParameters)
-        {
-            var agencies = await _context.Agencies
-                .AsNoTracking()
-                .Where(x => x.IsStation)
-                .OrderBy(x => x.Name)
-                .ToListAsync();
-
-            var pagedAgencies = PagedList<Agency>.ToPagedList(
-                agencies.AsQueryable(),
-                agencyParameters.PageNumber,
-                agencyParameters.PageSize);
+                agencies.OrderBy(a => a.DistanceInKm).ToList(),
+                pagedParameters.PageNumber,
+                pagedParameters.PageSize);
 
             return pagedAgencies;
         }

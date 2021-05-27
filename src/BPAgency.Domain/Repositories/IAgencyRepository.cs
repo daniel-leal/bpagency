@@ -8,11 +8,7 @@ namespace BPAgency.Domain.Repositories
 {
     public interface IAgencyRepository
     {
-        Task<PagedList<Agency>> GetAll(AgencyParameters agencyParameters);
-        Task<PagedList<Agency>> GetAllStations(AgencyParameters agencyParameters);
-        Task<PagedList<Agency>> GetAllFromCapital(AgencyParameters agencyParameters);
-        Task<PagedList<Agency>> GetAllFromInland(AgencyParameters agencyParameters);
-        Task<PagedList<Agency>> GetAllFromCity(string city, AgencyParameters agencyParameters);
+        Task<PagedList<Agency>> GetAll(PagedAgencyParameters pagedParameters, bool? isCapital, bool? isStation);
         Task<Agency> GetById(Guid id);
     }
 }

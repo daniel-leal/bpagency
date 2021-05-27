@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BPAgency.Domain.Entities;
@@ -23,10 +24,12 @@ namespace BPAgency.Api
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Agency>>> GetAll(
             [FromServices] IAgencyRepository repository,
-            [FromQuery] AgencyParameters parameters
+            [FromQuery] PagedAgencyParameters pageParameters,
+            [FromQuery] bool? isCapital,
+            [FromQuery] bool? isStation
         )
         {
-            var agencies = await repository.GetAll(parameters);
+            var agencies = await repository.GetAll(pageParameters, isCapital, isStation);
 
             var metadata = new
             {

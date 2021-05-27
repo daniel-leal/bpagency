@@ -1,3 +1,5 @@
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using BPAgency.Domain.Utils;
 using NetTopologySuite.Geometries;
@@ -107,9 +109,11 @@ namespace BPAgency.Domain.Entities
             * appropriate coordinate system. In this case, we're using SRID 2855 
             * since it covers the geographic area of our data 
             */
-            var distanceInKm = Location
+            var distanceInKm = Math.Round(
+                Location
                 .ProjectTo(2855)
-                .Distance(pt.ProjectTo(2855)) / 1000.0;
+                .Distance(pt.ProjectTo(2855)) / 1000.0,
+                2);
 
             return distanceInKm;
         }
