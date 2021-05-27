@@ -25,10 +25,11 @@ namespace BPAgency.Api
             [FromServices] IAgencyRepository repository,
             [FromQuery] PagedAgencyParameters pageParameters,
             [FromQuery] bool? isCapital,
-            [FromQuery] bool? isStation
+            [FromQuery] bool? isStation,
+            [FromQuery] bool? isOpen
         )
         {
-            var agencies = await repository.GetAll(pageParameters, isCapital, isStation);
+            var agencies = await repository.GetAll(pageParameters, isCapital, isStation, isOpen);
 
             var metadata = new
             {

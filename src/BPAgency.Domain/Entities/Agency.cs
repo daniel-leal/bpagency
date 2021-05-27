@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using BPAgency.Domain.Utils;
 using NetTopologySuite.Geometries;
@@ -59,8 +60,6 @@ namespace BPAgency.Domain.Entities
 
         public double Longitude => Location.Coordinate.Y;
 
-        public double DistanceInKm => CalcDistanceInKm(-1.4398515, -48.490871);
-
         public string Phone { get; private set; }
 
         public string Phone2 { get; private set; }
@@ -79,7 +78,10 @@ namespace BPAgency.Domain.Entities
 
         public bool IsCapital { get; private set; } // Agencia ou Posto da Capital?
 
+        // Computed Columns
         public bool IsOpen => CheckAgencyOpen();
+        public double DistanceInKm => CalcDistanceInKm(-1.4398515, -48.490871);
+
 
         /// <summary>This method calculates the distance in KM between you 
         /// and another geographic point (Agency).

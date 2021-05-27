@@ -11,7 +11,8 @@ namespace BPAgency.Domain.Repositories
         Task<PagedList<Agency>> GetAll(
             PagedAgencyParameters pagedParameters,
             bool? isCapital,
-            bool? isStation
+            bool? isStation,
+            bool? isOpen
         );
 
         Task<Agency> GetByCode(string code);

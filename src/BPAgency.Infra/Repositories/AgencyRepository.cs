@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BPAgency.Domain.Entities;
@@ -21,23 +21,34 @@ namespace BPAgency.Infra.Repositories
         public async Task<PagedList<Agency>> GetAll(
             PagedAgencyParameters pagedParameters,
             bool? isCapital,
-            bool? isStation
+            bool? isStation,
+            bool? isOpen
         )
         {
-            var query = _context.Agencies
+            var dbQuery = _context.Agencies
                 .AsNoTracking()
                 .AsQueryable();
 
             if (isCapital.HasValue)
-                query = query.Where(a => a.IsCapital == isCapital);
+                dbQuery = dbQuery.Where(a => a.IsCapital == isCapital);
 
             if (isStation.HasValue)
-                query = query.Where(a => a.IsStation == isStation);
+                dbQuery = dbQuery.Where(a => a.IsStation == isStation);
 
-            var agencies = await query.ToListAsync();
+            var localQuery = await dbQuery.ToListAsync<Agency>();
+
+            if (isOpen.HasValue)
+                localQuery = localQuery
+                .Where(a => a.IsOpen == isOpen)
+                .OrderBy(a => a.DistanceInKm)
+                .ToList();
+            else
+                localQuery
+                .OrderBy(a => a.DistanceInKm)
+                .ToList();
 
             var pagedAgencies = PagedList<Agency>.ToPagedList(
-                agencies.OrderBy(a => a.DistanceInKm).ToList(),
+                localQuery,
                 pagedParameters.PageNumber,
                 pagedParameters.PageSize);
 
