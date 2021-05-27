@@ -59,9 +59,8 @@ namespace BPAgency.Api
                     "/swagger/v1/swagger.json",
                     "BPAgency.Api v1"));
             }
-
-
-            app.UseHttpsRedirection();
+            else if (env.IsProduction())
+                app.UseHttpsRedirection();
 
             app.UseRouting();
             app.UseCors(x => x
